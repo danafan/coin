@@ -280,13 +280,16 @@
 			this.getList();
 		},
 		mounted() {
+			//监听页面滑动事件
 			this.$refs.box.addEventListener('scroll', () => {
 				this.initHeight();
 			}, false)
 			this.$nextTick(() => {
+				//获取吸顶元素距离顶部的距离
 				this.offsetTop = document.querySelector('#boxFixed').offsetTop;
+				// 获取吸顶元素的高度
 				this.offsetHeight = document.querySelector('#boxFixed').offsetHeight;
-			})
+			});
 		},
 		watch:{
 			//监听手机号
@@ -346,7 +349,7 @@
 					const timer = setInterval(() => {
 						second--;
 						if (second) {
-							toast.message = `倒计时 ${second} 秒`;
+							toast.message = `验证中 ${second} 秒`;
 						} else {
 							clearInterval(timer);
 							this.$toast.clear();
@@ -370,11 +373,19 @@
 				}
 				console.log(arg);
 				//模拟数据
-				
-				for(let i = 0;i < 100;i ++){
+				//获取static下的图片文件(模拟数据用)
+				var files = require.context("../../static/", true, /\.png$/).keys();
+				var list_img_names = [];
+				files.map(item => {
+					if(item.indexOf('new_icon_') > 1){
+						let item_name = item.split('./')[1];
+						list_img_names.push(item_name)
+					}
+				})
+				for(let i = 0;i < 58;i ++){
 					var coin_item = {
 						id:'1',
-						icon_url:require('../../static/coin_logo.png'),	//图标
+						icon_url:require(`../../static/${list_img_names[i]}`),	//图标
 						name:'ZB',				//简称
 						cn_name:'中币',			//中文名称
 						cj_price:'374.4万',		//成交价
